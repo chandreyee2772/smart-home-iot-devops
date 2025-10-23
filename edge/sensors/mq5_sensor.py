@@ -1,24 +1,15 @@
-import requests
-import RPi.GPIO as GPIO
-import time
+import BlynkLib, RPi.GPIO as GPIO, time
 
-MQ5_PIN = 18  # Change if needed
-
+BLYNK_AUTH = "<YOUR_BLYNK_TOKEN>"
+MQ5_PIN = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(MQ5_PIN, GPIO.IN)
+blynk = BlynkLib.Blynk(BLYNK_AUTH)
 
-API_URL = "http://192.168.114.61:8080/sensor"
+@blynk.handle_event("read V2")
+def read_virtual_pin_handler(pin):
+    gas_detected = (GPIO.input(MQ5_PIN) == 0)
+    blynk.virtual_write(2, int(gas_detected))  # V2 widget in Blynk
 
 while True:
-    gas = GPIO.input(MQ5_PIN)
-    payload = {
-        "sensor": "mq5",
-        "value": bool(gas == 0),  # Typically 0 means gas detected
-        "ts": time.strftime("%Y-%m-%dT%H:%M:%S")
-    }
-    try:
-        requests.post(API_URL, json=payload)
-        print("Posted:", payload)
-    except Exception as e:
-        print("Error posting:", e)
-    time.sleep(2)
+    blynk.run()

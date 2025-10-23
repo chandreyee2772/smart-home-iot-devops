@@ -1,24 +1,15 @@
-import requests
-import RPi.GPIO as GPIO
-import time
+import BlynkLib, RPi.GPIO as GPIO, time
 
-PIR_PIN = 17  # Change if needed
-
+BLYNK_AUTH = "<YOUR_BLYNK_TOKEN>"
+PIR_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PIR_PIN, GPIO.IN)
+blynk = BlynkLib.Blynk(BLYNK_AUTH)
 
-API_URL = "http://192.168.114.61:8080/sensor"
+@blynk.handle_event("read V1")
+def read_virtual_pin_handler(pin):
+    motion = GPIO.input(PIR_PIN)
+    blynk.virtual_write(1, int(motion))  # V1 widget in Blynk Mobile/Web dashboard
 
 while True:
-    motion = GPIO.input(PIR_PIN)
-    payload = {
-        "sensor": "pir",
-        "value": bool(motion),
-        "ts": time.strftime("%Y-%m-%dT%H:%M:%S")
-    }
-    try:
-        requests.post(API_URL, json=payload)
-        print("Posted:", payload)
-    except Exception as e:
-        print("Error posting:", e)
-    time.sleep(2)
+    blynk.run()

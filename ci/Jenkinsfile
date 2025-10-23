@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker compose -f infra/docker-compose.yml build'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh 'pytest' // If you have tests
+      }
+    }
+    stage('Push Images') {
+      steps {
+        sh 'docker compose -f infra/docker-compose.yml push'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh 'terraform -chdir=terraform apply -auto-approve'
+      }
+    }
+  }
+}
