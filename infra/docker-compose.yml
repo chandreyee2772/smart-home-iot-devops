@@ -1,4 +1,4 @@
-version: "3.8"
+
 services:
   mqtt:
     image: eclipse-mosquitto:latest
@@ -8,21 +8,20 @@ services:
     volumes:
       - ./services/mqtt:/mosquitto/config
   db:
-  image: postgres:15
-  environment:
-    POSTGRES_DB: smart_home
-    POSTGRES_USER: piuser
-    POSTGRES_PASSWORD: pisecret
-  volumes:
-    - pgdata:/var/lib/postgresql/data
-    - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql
-
+    image: postgres:15
+    environment:
+      POSTGRES_DB: smart_home
+      POSTGRES_USER: piuser
+      POSTGRES_PASSWORD: pisecret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql
   api:
-    build: ./services/api
+    build: C:\Users\chand\OneDrive\Desktop\smart-home-iot-devops\services\api
     ports:
       - "8080:8080"
   dashboard:
-    build: ./services/dashboard
+    build: C:\Users\chand\OneDrive\Desktop\smart-home-iot-devops\services\dashboard
     ports:
       - "8501:8501"
   prometheus:
