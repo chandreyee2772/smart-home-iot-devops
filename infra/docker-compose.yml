@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  mqtt:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./services/mqtt:/mosquitto/config
+  db:
+  image: postgres:15
+  environment:
+    POSTGRES_DB: smart_home
+    POSTGRES_USER: piuser
+    POSTGRES_PASSWORD: pisecret
+  volumes:
+    - pgdata:/var/lib/postgresql/data
+    - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build: ./services/api
+    ports:
+      - "8080:8080"
+  dashboard:
+    build: ./services/dashboard
+    ports:
+      - "8501:8501"
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./infra/prometheus:/etc/prometheus
+    ports:
+      - "9090:9090"
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+volumes:
+  pgdata:
