@@ -1,6 +1,6 @@
 import BlynkLib, RPi.GPIO as GPIO, time
 
-BLYNK_AUTH = "<YOUR_BLYNK_TOKEN>"
+BLYNK_AUTH = "XiFF79IKOzkz7RzMx7D9TCIIy7Tmd-p4"
 MQ5_PIN = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(MQ5_PIN, GPIO.IN)

@@ -1,6 +1,6 @@
 import BlynkLib, RPi.GPIO as GPIO, time
 
-BLYNK_AUTH = "<YOUR_BLYNK_TOKEN>"
+BLYNK_AUTH = "XiFF79IKOzkz7RzMx7D9TCIIy7Tmd-p4"
 PIR_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PIR_PIN, GPIO.IN)
