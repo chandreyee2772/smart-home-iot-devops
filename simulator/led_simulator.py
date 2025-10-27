@@ -5,13 +5,13 @@ import requests
 API_URL = 'http://localhost:8080/sensor'
 
 while True:
-    pir_state = random.choice([0, 1])
+    led_state = random.choice([0, 1])
     data = {
-        'sensor': 'pir',
-        'value': pir_state,
+        'sensor': 'led',
+        'value': led_state,
         'ts': time.strftime("%Y-%m-%dT%H:%M:%S")
     }
-    print("Simulated PIR:", data)
+    print("Simulated LED:", data)
     try:
         requests.post(API_URL, json=data)
     except Exception as e:
